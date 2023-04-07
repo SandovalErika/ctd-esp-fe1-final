@@ -1,3 +1,4 @@
+import { useAppSelector } from '../../redux/hooks';
 import './grilla-personajes.css';
 import TarjetaPersonaje from './tarjeta-personaje.componente';
 
@@ -9,13 +10,29 @@ import TarjetaPersonaje from './tarjeta-personaje.componente';
  * 
  * @returns un JSX element 
  */
-const GrillaPersonajes = () => {
+
+
+const GrillaPersonajes = ({personajes}) => {
+    const personaj = useAppSelector(state => state.personajes)
+    console.log('personajes', personaj)
+
+    const personajesRedux = personaj.personajes.results;
 
     return <div className="grilla-personajes">
-       <TarjetaPersonaje />
-       <TarjetaPersonaje />
-       <TarjetaPersonaje />
+        {
+        (personajes && personajes.length > 0) ?
+            personajes.map((personaje) => (
+              <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+            )) :
+            (personajesRedux && personajesRedux.length > 0) ?
+              personajesRedux.map((personaje) => (
+                <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+              )) :
+              <p>No hay personajes disponibles</p>
+        }
     </div>
+
+    
 }
  
 export default GrillaPersonajes;

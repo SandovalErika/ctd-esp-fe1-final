@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { getPersonajes } from '../../redux/personajesSlice';
+import { useAppSelector } from '../../redux/hooks';
 import './paginacion.css';
 
 /**
@@ -9,10 +13,28 @@ import './paginacion.css';
  * @returns un JSX element 
  */
 const Paginacion = () => {
+    const dispatch = useDispatch()
+    const { currentPage } = useAppSelector(state => state.personajes)
+
+    const [pages, setPages] =useState(currentPage)
+    
+    useEffect(()=>{
+        dispatch(getPersonajes(pages))
+    },[pages, dispatch])
+
+    const prevPage  = () => {
+        setPages(pages - 1)
+    }
+
+    const nextPage = () => {
+        setPages(pages + 1)
+    }
+
+
 
     return <div className="paginacion">
-        <button disabled={true} className={"primary"}>Anterior</button>
-        <button disabled={false} className={"primary"}>Siguiente</button>
+        <button disabled={false} className={"primary"} onClick={prevPage}>Anterior</button>
+        <button disabled={false} className={"primary"} onClick={nextPage}>Siguiente</button>
     </div>
 }
 
