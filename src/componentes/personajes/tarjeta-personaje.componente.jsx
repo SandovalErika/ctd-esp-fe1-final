@@ -1,7 +1,9 @@
 import BotonFavorito from '../botones/boton-favorito.componente';
 import './tarjeta-personaje.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import  { agregarFavorito, removerFavorito }  from '../../redux/personajesSlice'
+import  { addFavorite, deleteFavorite }  from '../../redux/personajesSlice'
+import { seleccionarPersonaje, getEpisodesByCharacter } from '../../redux/personajesSlice';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Tarjeta para cada personaje dentro de la grilla de personajes. 
@@ -14,32 +16,38 @@ import  { agregarFavorito, removerFavorito }  from '../../redux/personajesSlice'
  */
 
 const TarjetaPersonaje = ({ personaje }) => {
-    console.log('personaje', personaje)
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
-  const favorites = useAppSelector(state => state.personajes.favoritos);
-  console.log('favorites', favorites)
+  const favorites = useAppSelector(state => state.personajes.favorites);
 
-//   const handleClickFavorito = () => {
-//     dispatch(agregarFavorito(({ id: personaje.id, name: personaje.name, image: personaje.image })));
-//   }
 const handleClickFavorito = () => {
-    if (esFavorito) {
-        console.log('entraaa')
-        dispatch(removerFavorito(personaje.id));
+    if (isFavorite) {
+        dispatch(deleteFavorite(personaje.id));
     } else {
-        dispatch(agregarFavorito(({ id: personaje.id, name: personaje.name, image: personaje.image })));
+        dispatch(addFavorite(({ id: personaje.id, name: personaje.name, image: personaje.image })));
     }
 }
 
-  const esFavorito = favorites.some(f => f.id === personaje.id);
+  const isFavorite = favorites.some(f => f.id === personaje.id);
 
-    return <div className="tarjeta-personaje">
-        <img src={personaje.image} alt={personaje.name}/>
-        <div className="tarjeta-personaje-body">
-            <span>{personaje.name}</span>
-            <BotonFavorito esFavorito={esFavorito} onFavoriteClick={handleClickFavorito}/>
+  const handleSeleccionarPersonaje = (personaje) => {
+    dispatch(seleccionarPersonaje(personaje));
+    dispatch(getEpisodesByCharacter(personaje));
+    localStorage.setItem('selectedCharacter', JSON.stringify(personaje));
+    navigate(`/detalle/${personaje.id}`);
+  }
+
+    return (
+    <>
+        <div className="tarjeta-personaje">
+            <img src={personaje.image} alt={personaje.name} onClick={() => handleSeleccionarPersonaje(personaje)}/>
+            <div className="tarjeta-personaje-body">
+                <span>{personaje.name}</span>
+                <BotonFavorito isFavorite={isFavorite} onFavoriteClick={handleClickFavorito}/>
+            </div>
         </div>
-    </div>
+    </>
+    )
 }
 
 export default TarjetaPersonaje;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { getPersonajes } from '../../redux/personajesSlice';
+import { getCharacters } from '../../redux/personajesSlice';
 import { useAppSelector } from '../../redux/hooks';
 import './paginacion.css';
 
@@ -19,7 +19,7 @@ const Paginacion = () => {
     const [pages, setPages] =useState(currentPage)
     
     useEffect(()=>{
-        dispatch(getPersonajes(pages))
+        dispatch(getCharacters(pages))
     },[pages, dispatch])
 
     const prevPage  = () => {

@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+import { useAppSelector } from '../redux/hooks';
 import "./Detalle.css";
 import BotonFavorito from "../componentes/botones/boton-favorito.componente";
 import TarjetaEpisodio from "../componentes/episodios/tarjeta-episodio.componente";
@@ -15,25 +17,37 @@ import TarjetaEpisodio from "../componentes/episodios/tarjeta-episodio.component
  * @returns la pagina de detalle
  */
 const PaginaDetalle = () => {
+  
+    const [selectedCharacterLocal, setselectedCharacterLocal] = useState({});
+    const selectedCharacter = useAppSelector(state => state.personajes.selectedCharacter);
+    const episodes =  useAppSelector(state => state.personajes.episodes);
+   
+    useEffect(() => {
+      const selectedCharacterLS = JSON.parse(localStorage.getItem('selectedCharacter'));
+      if (selectedCharacterLS) {
+        setselectedCharacterLocal(selectedCharacterLS);
+      } else {
+        setselectedCharacterLocal(selectedCharacter);
+      }
+    }, [selectedCharacter]);
+
     return <div className="container">
-        <h3>Rick Sanchez</h3>
+        <h3>{selectedCharacterLocal.name}</h3>
         <div className={"detalle"}>
             <div className={"detalle-header"}>
-                <img src="https://rickandmortyapi.com/api/character/avatar/1.jpeg" alt="Rick Sanchez"/>
+                <img src={selectedCharacterLocal.image} alt={selectedCharacterLocal.name}/>
                 <div className={"detalle-header-texto"}>
 
-                    <p>Rick Sanchez</p>
-                    <p>Planeta: Earth</p>
-                    <p>Genero: Male</p>
+                    <p>{selectedCharacterLocal && selectedCharacterLocal.name ? selectedCharacterLocal.name : ''}</p>
+                    <p>{selectedCharacterLocal && selectedCharacterLocal.origin && selectedCharacterLocal.origin.name ? selectedCharacterLocal.origin.name : ''}</p>
+                    <p>{selectedCharacterLocal && selectedCharacterLocal.gender ? selectedCharacterLocal.gender : ''}</p>
                 </div>
-                <BotonFavorito esFavorito={false} />
+                <BotonFavorito isFavorite={false} />
             </div>
         </div>
         <h4>Lista de episodios donde apareció el personaje</h4>
         <div className={"episodios-grilla"}>
-            <TarjetaEpisodio />
-            <TarjetaEpisodio />
-            <TarjetaEpisodio />
+           {episodes ? episodes.map((episode) => <TarjetaEpisodio episode={episode} />) : ''}
         </div>
     </div>
 }

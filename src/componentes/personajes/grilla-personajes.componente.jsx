@@ -13,23 +13,34 @@ import TarjetaPersonaje from './tarjeta-personaje.componente';
 
 
 const GrillaPersonajes = ({personajes}) => {
-    const personaj = useAppSelector(state => state.personajes)
-    console.log('personajes', personaj)
+    const personajesRedux = useAppSelector(state => state.personajes.personajes.results)
+    const filtrosRedux = useAppSelector((state) => state.personajes.filters);
 
-    const personajesRedux = personaj.personajes.results;
+    let personajesRenderizar ;
+    if (personajes) {
+      if (personajes.length === 0) {
+        personajesRenderizar = <strong>No hay personajes favoritos</strong>;
+      } else {
+        personajesRenderizar = personajes.map((personaje) => (
+          <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+        ));
+      }
+    } else {
+      if (filtrosRedux && filtrosRedux.length > 0) {
+        personajesRenderizar = filtrosRedux.map((personaje) => (
+          <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+        ));
+      } else if (personajesRedux && personajesRedux.length > 0) {
+        personajesRenderizar = personajesRedux.map((personaje) => (
+          <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+        ));
+      } else {
+        personajesRenderizar = <p>No hay personajes disponibles</p>;
+      }
+    }
 
     return <div className="grilla-personajes">
-        {
-        (personajes && personajes.length > 0) ?
-            personajes.map((personaje) => (
-              <TarjetaPersonaje personaje={personaje} key={personaje.id} />
-            )) :
-            (personajesRedux && personajesRedux.length > 0) ?
-              personajesRedux.map((personaje) => (
-                <TarjetaPersonaje personaje={personaje} key={personaje.id} />
-              )) :
-              <p>No hay personajes disponibles</p>
-        }
+        {personajesRenderizar}
     </div>
 
     
