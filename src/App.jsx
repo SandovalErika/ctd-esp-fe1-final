@@ -6,6 +6,14 @@ import PaginaFavoritos from "./paginas/Favoritos.pagina";
 import PaginaDetalle from "./paginas/Detalle.pagina";
 import Encabezado from "./componentes/layout/encabezado.componente";
 
+/**
+ * Componente principal de la aplicación.
+ *
+ * Encapsula todas las páginas de la aplicación y el encabezado.
+ *
+ * @returns {JSX.Element} Componente de React.
+ */
+
 function App() {
   return (
     <div className="App">

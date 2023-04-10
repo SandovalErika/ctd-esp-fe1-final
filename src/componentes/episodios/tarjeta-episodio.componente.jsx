@@ -3,8 +3,10 @@ import './tarjeta-episodio.css';
 /**
  * Tarjeta para cada episodio dentro de la vista de personaje.
  * 
- * Deberás agregar las propiedades necesarias para mostrar los datos de los episodios
- * 
+ * * @typedef {object} Episode
+ * @property {Episode} episode - El episodio a mostrar.
+ *
+ * @returns {JSX.Element} Componente de React.
  * 
  * @returns un JSX element 
  */

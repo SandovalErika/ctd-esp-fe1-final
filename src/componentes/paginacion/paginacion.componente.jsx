@@ -6,15 +6,13 @@ import './paginacion.css';
 
 /**
  * Componente que contiene los botones para paginar
- * 
- * Deberás agregar las propiedades necesarias para que funcione correctamente
- * 
- * 
- * @returns un JSX element 
+ * @component
+ * @name Paginacion
+ * @returns {JSX.Element} - Botones Anterior/Siguiente de paginacion 
  */
 const Paginacion = () => {
     const dispatch = useDispatch()
-    const { currentPage } = useAppSelector(state => state.personajes)
+    const { currentPage, personajes } = useAppSelector(state => state.personajes)
 
     const [pages, setPages] =useState(currentPage)
     
@@ -30,11 +28,9 @@ const Paginacion = () => {
         setPages(pages + 1)
     }
 
-
-
     return <div className="paginacion">
-        <button disabled={false} className={"primary"} onClick={prevPage}>Anterior</button>
-        <button disabled={false} className={"primary"} onClick={nextPage}>Siguiente</button>
+        <button disabled={personajes && personajes.info && personajes.info.prev === null ? true : false} className={"primary"} onClick={prevPage}>Anterior</button>
+        <button disabled={personajes && personajes.info && personajes.info.next === null ? true : false} className={"primary"} onClick={nextPage}>Siguiente</button>
     </div>
 }
 

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import BotonFavorito from '../botones/boton-favorito.componente';
 import './tarjeta-personaje.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -8,11 +9,10 @@ import { useNavigate } from 'react-router-dom';
 /**
  * Tarjeta para cada personaje dentro de la grilla de personajes. 
  * 
- * Deberás agregar las propiedades necesarias para mostrar los datos de los personajes
- * 
- * 
- * @returns un JSX element 
- * 
+ * @component
+ * @param {Object} props - Propiedades de la tarjeta.
+ * @param {Object} props.personaje - Objeto que representa el personaje.
+ * @returns {JSX.Element} - Tarjeta de personaje.
  */
 
 const TarjetaPersonaje = ({ personaje }) => {
@@ -49,5 +49,13 @@ const handleClickFavorito = () => {
     </>
     )
 }
+
+TarjetaPersonaje.propTypes = {
+    personaje: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    }).isRequired,
+  };
 
 export default TarjetaPersonaje;

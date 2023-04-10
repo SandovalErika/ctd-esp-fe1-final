@@ -1,14 +1,13 @@
+import PropTypes from 'prop-types';
 import { useAppSelector } from '../../redux/hooks';
 import './grilla-personajes.css';
 import TarjetaPersonaje from './tarjeta-personaje.componente';
 
 /**
  * Grilla de personajes para la pagina de inicio
- * 
- * Deberás agregar las funciones necesarias para mostrar y paginar los personajes
- * 
- * 
- * @returns un JSX element 
+ * @component
+ * @param {Array} personajes - Un array de objetos que representan los personajes.
+ * @returns {JSX.Element} Componente de React que renderiza una grilla de personajes.
  */
 
 
@@ -42,8 +41,18 @@ const GrillaPersonajes = ({personajes}) => {
     return <div className="grilla-personajes">
         {personajesRenderizar}
     </div>
-
-    
 }
- 
+
+GrillaPersonajes.propTypes = {
+  personajes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      status: PropTypes.string.isOptional,
+      species: PropTypes.string.isRequired,
+      gender: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ),
+};
 export default GrillaPersonajes;
