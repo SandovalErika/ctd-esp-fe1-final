@@ -14,6 +14,7 @@ import TarjetaPersonaje from './tarjeta-personaje.componente';
 const GrillaPersonajes = ({personajes}) => {
     const personajesRedux = useAppSelector(state => state.personajes.personajes.results)
     const filtrosRedux = useAppSelector((state) => state.personajes.filters);
+    const loading = useAppSelector((state) => state.personajes.loading);
     
     let personajesRenderizar ;
     try {  
@@ -44,7 +45,7 @@ const GrillaPersonajes = ({personajes}) => {
     
 
     return <div className="grilla-personajes">
-        {personajesRenderizar}
+      {!loading ? personajesRenderizar: 'Cargando...' }
     </div>
 }
 

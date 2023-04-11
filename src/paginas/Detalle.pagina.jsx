@@ -21,6 +21,7 @@ import  { addFavorite, deleteFavorite }  from '../redux/personajesSlice'
 const PaginaDetalle = () => {
     const dispatch = useAppDispatch();
     const favorites = useAppSelector(state => state.personajes.favorites);
+    const loading = useAppSelector((state) => state.personajes.loading);
     const [selectedCharacterLocal, setselectedCharacterLocal] = useState({});
     const selectedCharacter = useAppSelector(state => state.personajes.selectedCharacter);
     const episodes =  useAppSelector(state => state.personajes.episodes);
@@ -44,23 +45,29 @@ const PaginaDetalle = () => {
     const isFavorite = favorites.some(f => f.id === selectedCharacterLocal.id);
 
     return <div className="container">
-        <h3>{selectedCharacterLocal.name}</h3>
-        <div className={"detalle"}>
-            <div className={"detalle-header"}>
-                <img src={selectedCharacterLocal.image} alt={selectedCharacterLocal.name}/>
-                <div className={"detalle-header-texto"}>
-
-                    <p>{selectedCharacterLocal && selectedCharacterLocal.name ? selectedCharacterLocal.name : ''}</p>
-                    <p>{selectedCharacterLocal && selectedCharacterLocal.origin && selectedCharacterLocal.origin.name ? selectedCharacterLocal.origin.name : ''}</p>
-                    <p>{selectedCharacterLocal && selectedCharacterLocal.gender ? selectedCharacterLocal.gender : ''}</p>
-                </div>
-                <BotonFavorito isFavorite={isFavorite} onFavoriteClick={handleClickFavorito} />
-            </div>
-        </div>
-        <h4>Lista de episodios donde apareció el personaje</h4>
-        <div className={"episodios-grilla"}>
-           {episodes ? episodes.map((episode) => <TarjetaEpisodio episode={episode} />) : ''}
-        </div>
+      {!loading ? (
+        <>
+         <h3>{selectedCharacterLocal.name}</h3>
+         <div className={"detalle"}>
+             <div className={"detalle-header"}>
+                 <img src={selectedCharacterLocal.image} alt={selectedCharacterLocal.name}/>
+                 <div className={"detalle-header-texto"}>
+ 
+                     <p>{selectedCharacterLocal && selectedCharacterLocal.name ? selectedCharacterLocal.name : ''}</p>
+                     <p>{selectedCharacterLocal && selectedCharacterLocal.origin && selectedCharacterLocal.origin.name ? selectedCharacterLocal.origin.name : ''}</p>
+                     <p>{selectedCharacterLocal && selectedCharacterLocal.gender ? selectedCharacterLocal.gender : ''}</p>
+                 </div>
+                 <BotonFavorito isFavorite={isFavorite} onFavoriteClick={handleClickFavorito} />
+             </div>
+         </div>
+         <h4>Lista de episodios donde apareció el personaje</h4>
+         <div className={"episodios-grilla"}>
+            {episodes ? episodes.map((episode) => <TarjetaEpisodio episode={episode} />) : ''}
+         </div>
+        </>
+        
+      ) : 'Cargando...'}
+       
     </div>
 }
 
