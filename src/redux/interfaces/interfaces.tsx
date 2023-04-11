@@ -1,5 +1,5 @@
 export interface IInitialType {
-    personajes:  any
+    personajes:  IResponseApiGetCharacters
     currentPage: number
     favorites: IFavorite[]
     filters: IFilter[]

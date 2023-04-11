@@ -2,7 +2,15 @@
     import { IInitialType, IFavorite, IResponseApiGetCharacters, IDataCharacter } from './interfaces/interfaces'
 
     const initialState: IInitialType  = {
-        personajes: [],
+        personajes: {
+            info: {
+                count: 826,
+                pages: 42,
+                next: '',
+                prev: null
+            },
+            results: []
+        },
         currentPage: 1,
         favorites: [],
         filters: [],

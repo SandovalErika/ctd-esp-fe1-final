@@ -14,29 +14,34 @@ import TarjetaPersonaje from './tarjeta-personaje.componente';
 const GrillaPersonajes = ({personajes}) => {
     const personajesRedux = useAppSelector(state => state.personajes.personajes.results)
     const filtrosRedux = useAppSelector((state) => state.personajes.filters);
-
+    
     let personajesRenderizar ;
-    if (personajes) {
-      if (personajes.length === 0) {
-        personajesRenderizar = <strong>No hay personajes favoritos</strong>;
+    try {  
+      if (personajes) {
+        if (personajes.length === 0) {
+          personajesRenderizar = <strong>No hay personajes favoritos</strong>;
+        } else {
+          personajesRenderizar = personajes.map((personaje) => (
+            <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+          ));
+        }
       } else {
-        personajesRenderizar = personajes.map((personaje) => (
-          <TarjetaPersonaje personaje={personaje} key={personaje.id} />
-        ));
+        if (filtrosRedux && filtrosRedux.length > 0) {
+          personajesRenderizar = filtrosRedux.map((personaje) => (
+            <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+          ));
+        } else if (personajesRedux && personajesRedux.length > 0) {
+          personajesRenderizar = personajesRedux.map((personaje) => (
+            <TarjetaPersonaje personaje={personaje} key={personaje.id} />
+          ));
+        } else {
+          personajesRenderizar = <p>No hay personajes disponibles</p>;
+        }
       }
-    } else {
-      if (filtrosRedux && filtrosRedux.length > 0) {
-        personajesRenderizar = filtrosRedux.map((personaje) => (
-          <TarjetaPersonaje personaje={personaje} key={personaje.id} />
-        ));
-      } else if (personajesRedux && personajesRedux.length > 0) {
-        personajesRenderizar = personajesRedux.map((personaje) => (
-          <TarjetaPersonaje personaje={personaje} key={personaje.id} />
-        ));
-      } else {
-        personajesRenderizar = <p>No hay personajes disponibles</p>;
-      }
+    } catch (e) {
+      console.log('Error', e.message)
     }
+    
 
     return <div className="grilla-personajes">
         {personajesRenderizar}
@@ -49,8 +54,8 @@ GrillaPersonajes.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
       status: PropTypes.string.isOptional,
-      species: PropTypes.string.isRequired,
-      gender: PropTypes.string.isRequired,
+      species: PropTypes.string.isOptional,
+      gender: PropTypes.string.isOptional,
       image: PropTypes.string.isRequired,
     })
   ),
