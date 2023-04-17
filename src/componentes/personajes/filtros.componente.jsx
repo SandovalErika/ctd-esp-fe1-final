@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { searchCharactersByFilter } from '../../redux/personajesSlice';
+import { getCharactersByNameFilters } from '../../redux/personajesSlice';
 import './filtros.css';
 
 /**
@@ -26,12 +26,12 @@ const Filtros = ({filtro, setFiltro}) => {
     const handleInputChange = (event) => {
       const filtro = event.target.value;
       setFiltro(filtro);
-      dispatch(searchCharactersByFilter(filtro));
+      dispatch(getCharactersByNameFilters(filtro));
     };
 
     return <div className="filtros">
         <label htmlFor="nombre">Filtrar por nombre:</label>
-        <input type="text" placeholder="Rick, Morty, Beth, Alien, ...etc" name="nombre" value={filtro} onChange={handleInputChange} />
+        <input type="text" placeholder="Busca por nombre" name="nombre" value={filtro} onChange={handleInputChange} />
     </div>
 }
 Filtros.propTypes = {

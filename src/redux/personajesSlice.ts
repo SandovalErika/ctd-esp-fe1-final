@@ -4,12 +4,18 @@
     const initialState: IInitialType  = {
         personajes: {
             info: {
-                count: 826,
-                pages: 42,
+                count: 0,
+                pages: 0,
                 next: '',
                 prev: null
             },
             results: []
+        },
+        infoPages: {
+            count: 0,
+            pages: 0,
+            next: '',
+            prev: ''
         },
         currentPage: 1,
         favorites: [],
@@ -21,8 +27,8 @@
 
     export const getCharacters = createAsyncThunk(
         'personajes/getPersonajes',
-        async (page: number) => {
-            const res = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`)
+        async (url: string) => {
+            const res = await fetch(url ? url : `https://rickandmortyapi.com/api/character`)
             const parseRes: IResponseApiGetCharacters = await res.json()
             return parseRes
         }
@@ -39,6 +45,15 @@
           return episodes
         }
       )
+
+      export const getCharactersByNameFilters = createAsyncThunk(
+        'personajes/getPersonajesByName',
+        async (name: string) => {
+            const res = await fetch(`https://rickandmortyapi.com/api/character?name=${name}`)
+            const parseRes: IResponseApiGetCharacters = await res.json()
+            return parseRes
+        }
+    )
 
     const grillaPersonajesSlice = createSlice({
         name: 'personajes',
@@ -81,20 +96,30 @@
                 .addCase(getCharacters.fulfilled, (state, action) => {
                     state.loading = false
                     state.personajes = action.payload
+                    state.infoPages = action.payload.info
+                    console.log('infoPages', state.infoPages)
                 })
                 .addCase(getCharacters.rejected, (state, action) => {
                     state.loading = false
                 })
                 .addCase(getEpisodesByCharacter.pending, (state) => {
                     state.loading = true
-                  })
-                  .addCase(getEpisodesByCharacter.fulfilled, (state, action) => {
+                })
+                .addCase(getEpisodesByCharacter.fulfilled, (state, action) => {
                     state.loading = false;
                     state.episodes = action.payload;
-                  })
-                  .addCase(getEpisodesByCharacter.rejected, (state, action) => {
+                })
+                .addCase(getEpisodesByCharacter.rejected, (state, action) => {
                     state.loading = false
-                  })
+                })
+                .addCase(getCharactersByNameFilters.fulfilled, (state, action) => {
+                    state.loading = false;
+                    state.personajes = action.payload;
+                    state.infoPages = action.payload.info
+                    console.log(' state.personajes', state.personajes)
+                    console.log('infoPages', state.infoPages)
+
+                })
         }
     })
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { getCharacters } from '../../redux/personajesSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -12,25 +12,35 @@ import './paginacion.css';
  */
 const Paginacion = () => {
     const dispatch = useDispatch()
-    const { currentPage, personajes } = useAppSelector(state => state.personajes)
+    const { next, prev } = useAppSelector(state => state.personajes.infoPages)
+    const loading = useAppSelector((state) => state.personajes.loading);
 
-    const [pages, setPages] =useState(currentPage)
     
     useEffect(()=>{
-        dispatch(getCharacters(pages))
-    },[pages, dispatch])
+        dispatch(getCharacters())
+    },[ dispatch])
 
-    const prevPage  = () => {
-        setPages(pages - 1)
-    }
-
-    const nextPage = () => {
-        setPages(pages + 1)
-    }
+    const prevPage = () => {
+        if (prev !== null) {
+          dispatch(getCharacters(prev));
+        }
+      };
+    
+      const nextPage = () => {
+        if (next !== null) {
+          dispatch(getCharacters(next));
+        }
+      };
 
     return <div className="paginacion">
-        <button disabled={personajes && personajes.info && personajes.info.prev === null ? true : false} className={"primary"} onClick={prevPage}>Anterior</button>
-        <button disabled={personajes && personajes.info && personajes.info.next === null ? true : false} className={"primary"} onClick={nextPage}>Siguiente</button>
+        {!loading ?
+        (
+        <>
+            <button disabled={prev === null} className={"primary"} onClick={prevPage}>Anterior</button>
+            <button disabled={next === null} className={"primary"} onClick={nextPage}>Siguiente</button>
+        </>
+        ) : 'Cargando...' }
+        
     </div>
 }
 

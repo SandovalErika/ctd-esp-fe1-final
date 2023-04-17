@@ -1,8 +1,9 @@
 export interface IInitialType {
     personajes:  IResponseApiGetCharacters
+    infoPages: CharacterInfo
     currentPage: number
     favorites: IFavorite[]
-    filters: IFilter[]
+    filters: any
     episodes: []
     selectedCharacter: IDataCharacter[]
     loading: boolean
@@ -13,9 +14,16 @@ export interface IResponseApiGetCharacters {
         count: number
         pages: number
         next: string
-        prev: null
+        prev: null | string
     }
     results: IDataCharacter[]
+}
+
+export interface CharacterInfo{
+    count: number;
+    pages: number;
+    next: string;
+    prev: string | null;
 }
 
 export interface IDataCharacter {

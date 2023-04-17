@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { searchCharactersByFilter } from '../redux/personajesSlice';
 import Filtros from "../componentes/personajes/filtros.componente"
 import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente"
 import Paginacion from "../componentes/paginacion/paginacion.componente";
@@ -14,13 +12,11 @@ import Paginacion from "../componentes/paginacion/paginacion.componente";
  * @returns la pagina de inicio
  */
 const PaginaInicio = () => {
-  const dispatch = useDispatch();
 
   const [filtro, setFiltro] = useState('');
 
   const handleBorrarFiltro = () => {
     setFiltro('');
-    dispatch(searchCharactersByFilter(''))
   };
 
     return <div className="container">
