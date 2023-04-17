@@ -21,24 +21,44 @@
         favorites: [],
         filters: [],
         episodes: [],
-        selectedCharacter: [],
-        loading: false
+        selectedCharacter: {
+            id: '',
+            name: '',
+            status: '',
+            species: '',
+            type: '',
+            gender: '',
+            origin: {
+                name: '',
+                url: '',
+            },
+            location: {
+                name: '',
+                url: '',
+            },
+            image: '',
+            episode: {},
+            url: '',
+            created: '',
+        },
+        loading: false,
+        error: ''
         }
 
-    export const getCharacters = createAsyncThunk(
+    export const getCharacters: any = createAsyncThunk(
         'personajes/getPersonajes',
-        async (url: string) => {
+        async (url: string | undefined) => {
             const res = await fetch(url ? url : `https://rickandmortyapi.com/api/character`)
             const parseRes: IResponseApiGetCharacters = await res.json()
             return parseRes
         }
     )
 
-    export const getEpisodesByCharacter = createAsyncThunk(
+    export const getEpisodesByCharacter: any = createAsyncThunk(
         'personajes/getEpisodiosPorPersonaje',
         async (character: IDataCharacter) => {
             const episodesIds: any[] = [];
-            character.episode.map((url) => 
+            character.episode.map((url: any) => 
                 episodesIds.push(url.split('/').pop()))
           const res = await fetch(`https://rickandmortyapi.com/api/episode/[${episodesIds.join(',')}]`);
           const episodes: any= await res.json();
@@ -46,9 +66,9 @@
         }
       )
 
-      export const getCharactersByNameFilters = createAsyncThunk(
+      export const getCharactersByNameFilters: any = createAsyncThunk(
         'personajes/getPersonajesByName',
-        async (name: string) => {
+        async (name: string | undefined) => {
             const res = await fetch(`https://rickandmortyapi.com/api/character?name=${name}`)
             const parseRes: IResponseApiGetCharacters = await res.json()
             return parseRes
@@ -59,7 +79,7 @@
         name: 'personajes',
         initialState,
         reducers: {
-            seleccionarPersonaje: (state, action) => {
+            selectedCharacter: (state, action) => {
                 state.selectedCharacter = action.payload;
                 state.episodes = action.payload.episode
               },
@@ -97,10 +117,14 @@
                     state.loading = false
                     state.personajes = action.payload
                     state.infoPages = action.payload.info
-                    console.log('infoPages', state.infoPages)
                 })
                 .addCase(getCharacters.rejected, (state, action) => {
                     state.loading = false
+                    state.error = action.error.message
+                    if (action.error.code === '404')
+                    {
+                        state.personajes.results = []
+                    }
                 })
                 .addCase(getEpisodesByCharacter.pending, (state) => {
                     state.loading = true
@@ -116,13 +140,17 @@
                     state.loading = false;
                     state.personajes = action.payload;
                     state.infoPages = action.payload.info
-                    console.log(' state.personajes', state.personajes)
-                    console.log('infoPages', state.infoPages)
-
+                })
+                .addCase(getCharactersByNameFilters.rejected, (state, action) => {
+                    state.error = action.error.message
+                    if (action.error.code === '404')
+                    {
+                        state.personajes.results = []
+                    }
                 })
         }
     })
 
-    export const { addFavorite, deleteFavorite, searchCharactersByFilter, deleteAllFavorites, seleccionarPersonaje } = grillaPersonajesSlice.actions
+    export const { addFavorite, deleteFavorite, searchCharactersByFilter, deleteAllFavorites, selectedCharacter } = grillaPersonajesSlice.actions
 
     export default grillaPersonajesSlice.reducer

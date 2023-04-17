@@ -1,28 +1,29 @@
 export interface IInitialType {
     personajes:  IResponseApiGetCharacters
-    infoPages: CharacterInfo
+    infoPages: ICharacterInfo | undefined
     currentPage: number
     favorites: IFavorite[]
-    filters: any
-    episodes: []
-    selectedCharacter: IDataCharacter[]
+    filters: IFilter[]
+    episodes: IEpisode[]
+    selectedCharacter: IDataCharacter
     loading: boolean
+    error: string | undefined
 }
 
 export interface IResponseApiGetCharacters {
     info: {
         count: number
         pages: number
-        next: string
+        next: string | null
         prev: null | string
     }
     results: IDataCharacter[]
 }
 
-export interface CharacterInfo{
+export interface ICharacterInfo{
     count: number;
     pages: number;
-    next: string;
+    next: string | null;
     prev: string | null;
 }
 
@@ -42,7 +43,7 @@ export interface IDataCharacter {
         url: string
     }
     image: string
-    episode: string[]
+    episode: any
     url: string
     created: string
 }
@@ -71,5 +72,31 @@ export interface IFavorite {
 export interface IFilter {
     id: string
     name: string
+    status: string
+    species: string
+    type: string
+    gender: string
+    origin: {
+        name: string
+        url: string
+    }
+    location: {
+        name: string
+        url: string
+    }
     image: string
+    episode: string[]
+    url: string
+    created: string
+}
+
+export interface IEpisode {
+    id: number
+    name: string
+    air_date: string
+    episode: string
+    url: string
+    created: string
+
+
 }

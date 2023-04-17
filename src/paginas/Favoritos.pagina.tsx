@@ -1,4 +1,4 @@
-import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente";
+import GridCharacters from "../componentes/personajes/grilla-personajes.componente";
 import { useAppSelector } from '../redux/hooks';
 import { useDispatch } from 'react-redux';
 import { deleteAllFavorites } from '../redux/personajesSlice'
@@ -9,7 +9,7 @@ import { deleteAllFavorites } from '../redux/personajesSlice'
  * @returns {JSX.Element} Componente de React
  */
 
-const PaginaFavoritos = () => {
+const FavoritePage = () => {
     const favorites = useAppSelector(state => state.personajes.favorites);
     const dispatch = useDispatch();
   
@@ -22,8 +22,8 @@ const PaginaFavoritos = () => {
             <h3>Personajes Favoritos</h3>
             <button onClick={handleDeleteAll} className="danger">Eliminar todos</button>
         </div>
-        <GrillaPersonajes personajes={favorites}/>
+        <GridCharacters personajes={favorites}/>
     </div>
 }
 
-export default PaginaFavoritos
+export default FavoritePage

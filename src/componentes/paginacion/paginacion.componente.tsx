@@ -7,13 +7,14 @@ import './paginacion.css';
 /**
  * Componente que contiene los botones para paginar
  * @component
- * @name Paginacion
+ * @name Pagination
  * @returns {JSX.Element} - Botones Anterior/Siguiente de paginacion 
  */
-const Paginacion = () => {
+const Pagination = (): JSX.Element => {
     const dispatch = useDispatch()
-    const { next, prev } = useAppSelector(state => state.personajes.infoPages)
-    const loading = useAppSelector((state) => state.personajes.loading);
+    const infoPages: any = useAppSelector(state => state.personajes.infoPages)
+    const { prev, next } = infoPages || []
+    const loading: boolean = useAppSelector((state) => state.personajes.loading);
 
     
     useEffect(()=>{
@@ -21,13 +22,13 @@ const Paginacion = () => {
     },[ dispatch])
 
     const prevPage = () => {
-        if (prev !== null) {
+        if (infoPages ? infoPages.prev !== null : '') {
           dispatch(getCharacters(prev));
         }
       };
     
       const nextPage = () => {
-        if (next !== null) {
+        if (infoPages ? infoPages.next !== null : '') {
           dispatch(getCharacters(next));
         }
       };
@@ -44,4 +45,4 @@ const Paginacion = () => {
     </div>
 }
 
-export default Paginacion;
+export default Pagination;

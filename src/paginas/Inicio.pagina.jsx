@@ -1,22 +1,25 @@
 import { useState } from 'react';
-import Filtros from "../componentes/personajes/filtros.componente"
-import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente"
-import Paginacion from "../componentes/paginacion/paginacion.componente";
+import { useDispatch } from 'react-redux';
+import Filters from "../componentes/personajes/filtros.componente"
+import GridCharacters from "../componentes/personajes/grilla-personajes.componente"
+import Pagination from "../componentes/paginacion/paginacion.componente";
+import { getCharactersByNameFilters } from '../redux/personajesSlice';
  
 /**
  * Esta es la pagina principal. Aquí se debera ver el panel de filtros junto con la grilla de personajes.
  * 
  * Uso: 
- * ``` <PaginaInicio /> ```
+ * ``` <Homepage /> ```
  * 
  * @returns la pagina de inicio
  */
-const PaginaInicio = () => {
-
-  const [filtro, setFiltro] = useState('');
+const Homepage = () => {
+  const dispatch = useDispatch();
+  const [filter, setFilter] = useState('');
 
   const handleBorrarFiltro = () => {
-    setFiltro('');
+    setFilter('');
+    dispatch(getCharactersByNameFilters(''));
   };
 
     return <div className="container">
@@ -24,11 +27,11 @@ const PaginaInicio = () => {
             <h3>Catálogo de Personajes</h3>
             <button className="danger" onClick={handleBorrarFiltro}>Eliminar filtro</button>
         </div>
-        <Filtros filtro={filtro} setFiltro={setFiltro}/>
-        <Paginacion />
-        <GrillaPersonajes />
-        <Paginacion />
+        <Filters filter={filter} setFilter={setFilter}/>
+        <Pagination />
+        <GridCharacters />
+        <Pagination />
     </div>
 }
 
-export default PaginaInicio
+export default Homepage

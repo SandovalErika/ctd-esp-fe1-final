@@ -1,3 +1,4 @@
+import { ICardEpisode } from './tarjeta-episodio.componente.interface';
 import './tarjeta-episodio.css';
 
 /**
@@ -10,7 +11,7 @@ import './tarjeta-episodio.css';
  * 
  * @returns un JSX element 
  */
-const TarjetaEpisodio = ({episode}) => {
+const CardEpisode = ({episode}: ICardEpisode): JSX.Element => {
 
     return <div className="tarjeta-episodio">
             <h4>{episode.name}</h4>
@@ -21,4 +22,4 @@ const TarjetaEpisodio = ({episode}) => {
     </div>
 }
 
-export default TarjetaEpisodio;
+export default CardEpisode;

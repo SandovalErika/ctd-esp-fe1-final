@@ -4,11 +4,11 @@ import './encabezado.css';
 /**
  * Encabezado que contiene los links para navegar entre las páginas
  *
- * Uso: `<Encabezado />`
+ * Uso: `<Header />`
  *
  * @returns {JSX.Element}
  */
-const Encabezado = () => {
+const Header = (): JSX.Element => {
 
     return <header>
             <div>
@@ -26,4 +26,4 @@ const Encabezado = () => {
     </header>
 }
 
-export default Encabezado
+export default Header
